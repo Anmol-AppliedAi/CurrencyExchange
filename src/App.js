@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Network from './Network';
-import ExchangeCurrency from './ExchangeCurrency';
+import Network from './Network/Network';
+import ExchangeCurrency from './ExchangeCurrency/ExchangeCurrency';
+import { defaultCurrencies, dates } from "./Constant";
 import './App.css';
-const defaultCurrencies = ["usd", "eur", "jpy", "chf", "cad", "aud", "zar"];
+
 const App = ()=> {
-  const dates = {
-    initialDate: new Date().toISOString().split('T')[0],
-    maxDate: new Date().toISOString().split('T')[0],
-    minDate: new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0]
-  }
-  const [date, setDate] = useState(dates.initialDate);
+  const {initialDate, maxDate, minDate} = dates;
+  const [date, setDate] = useState(initialDate);
   const [currency, setCurrency] = useState("eur");
   const [allCurrencies, setAllCurrencies] = useState({});
   const [selectedCurrencies, setSelectedCurrencies] = useState({});
@@ -98,8 +95,8 @@ const App = ()=> {
         name="date" 
         value={date} 
         onChange={onDateChange}
-        max={dates.maxDate}
-        min={dates.minDate}
+        max={maxDate}
+        min={minDate}
         />
         <label for="exchangeCurrency">Exchange Currencies</label>
         <ExchangeCurrency 

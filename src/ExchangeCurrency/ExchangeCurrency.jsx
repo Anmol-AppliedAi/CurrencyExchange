@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import "./ExchangeCurrency.css";
+
 const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrencies}) => {
     const [expanded, setExpanded ] = useState(false);
-    const [currencyLength, setCurrencyLength] = useState(10); 
-    const showCheckboxes= ()=> {
-        setExpanded(!expanded);
-    }
+    const checkBoxRef = useRef(null);
+    const showCheckboxes= ()=> {setExpanded(!expanded)};
+
     const onChange = (currency) => {
         if(selectedCurrencies[currency]) {
             const newSelectedCurrencies = {...selectedCurrencies};
@@ -14,7 +14,6 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
         } else {
             setSelectedCurrencies({...selectedCurrencies, [currency] : allCurrencies[currency]});
         }
-
     }
     const displayAllCurrencies = () => {
         const initialSelectedValues= [];
@@ -35,12 +34,22 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
             if(selectedCurrencies[currency]) initialSelectedValues.push(value);
             else if(allCurrencies[currency]) otherValues.push(value);
         })
-        return [...initialSelectedValues, ...otherValues].slice(0,currencyLength);
+        return [...initialSelectedValues, ...otherValues];
     }
-
+    const handleOutsideClick = (e) => {
+        if (checkBoxRef.current && !checkBoxRef.current.contains(e.target)) {
+            setExpanded(false);
+        }
+    };
+    useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    });
     return (
-        <div className="multiselect">
-          <div className="selectBox" onClick={showCheckboxes} >
+        <div className="multiselect" ref={checkBoxRef}>
+          <div className="selectBox" onClick={showCheckboxes}>
             <select>
               <option>Select an option</option>
             </select>
@@ -49,9 +58,6 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
             {
                 expanded && <div id="checkboxes">
                 {displayAllCurrencies()}
-                {currencyLength < Object.keys(allCurrencies).length && 
-                    <div className={"loader"} onClick={()=> setCurrencyLength(currencyLength+ 10)}>Load More</div>
-                }
             </div>
             }
         </div>

@@ -28,6 +28,10 @@
   text-align: left;
   margin-top: 10px;
 }
+.App-header select {
+  font-weight: bold;
+  height: 27px;
+}
 
 .App-link {
   color: #61dafb;

@@ -8,7 +8,6 @@
   
   .selectBox select {
     width: 100%;
-    font-weight: bold;
   }
   
   .overSelect {
@@ -24,6 +23,8 @@
     border: 1px #dadada solid;
     position: absolute;
     background: #282c34;
+    overflow-y: scroll;
+    height: 300px;
     width: 300px;
   }
   
