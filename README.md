@@ -22,5 +22,6 @@ You may also see any lint errors in the console.
 Display two dropdowns - 
 1. One is Currency dropdown
 2. Second is Date Dropdown
+3. Third dropdown contains exchange currency
 
 On change on any of the dropdowns, we make an api calls and update the table below 
