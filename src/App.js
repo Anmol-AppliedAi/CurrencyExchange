@@ -24,9 +24,11 @@ const App = ()=> {
     if(curencyVal != date) setDate(curencyVal);
   }
   const displayDefaultCurrency = ()=> {
-    return Object.keys(defaultCurrency).length> 0 && Object.keys(defaultCurrency).map((keyName, i) => (
-        <option value={keyName} key={keyName} >{defaultCurrency[keyName]} </option>
-    ))
+    return Object.keys(defaultCurrency).length> 0 && Object.keys(defaultCurrency).reduce((accumulator, keyName) => {
+        const val = (<option value={keyName} key={keyName} >{defaultCurrency[keyName]} </option>);
+        if(defaultCurrency[keyName]) accumulator.push(val);
+        return accumulator;
+  },[])
   };
   const displayCurrencyExchange = ()=> {
     const filteredExchangeRates = {};

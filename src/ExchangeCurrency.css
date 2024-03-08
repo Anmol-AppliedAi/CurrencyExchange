@@ -28,6 +28,16 @@
   
   #checkboxes label {
     display: block;
+    text-align: left;
+    padding: 0 10px;
+    font-size: 18px;
+  }
+  #checkboxes .loader {
+    font-size: 18px;
+    color: lightblue;
+    text-align: left;
+    padding-left: 20px;
+    cursor: pointer;
   }
   
   #checkboxes label:hover {
