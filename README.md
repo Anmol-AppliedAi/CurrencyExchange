@@ -13,3 +13,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will display currencyExchange on the landing page.
 You may also see any lint errors in the console.
+
+## Landing Page
+
+![alt text](image.png)
