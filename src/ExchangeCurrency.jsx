@@ -33,7 +33,7 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
               {allCurrencies[currency]}
             </label>);
             if(selectedCurrencies[currency]) initialSelectedValues.push(value);
-            else otherValues.push(value);
+            else if(allCurrencies[currency]) otherValues.push(value);
         })
         return [...initialSelectedValues, ...otherValues].slice(0,currencyLength);
     }
@@ -46,12 +46,14 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
             </select>
             <div className="overSelect"></div>
           </div>
-          <div id="checkboxes" style={{display: expanded ? "block": "none"}}>
-            {displayAllCurrencies()}
-            {currencyLength < Object.keys(allCurrencies).length && 
-                <div className={"loader"} onClick={()=> setCurrencyLength(currencyLength+ 10)}>Load More</div>
+            {
+                expanded && <div id="checkboxes">
+                {displayAllCurrencies()}
+                {currencyLength < Object.keys(allCurrencies).length && 
+                    <div className={"loader"} onClick={()=> setCurrencyLength(currencyLength+ 10)}>Load More</div>
+                }
+            </div>
             }
-          </div>
         </div>
     );
 };

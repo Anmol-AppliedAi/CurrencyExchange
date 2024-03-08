@@ -17,7 +17,7 @@ You may also see any lint errors in the console.
 ## Landing Page
 
 ![alt text](image.png)
-
+![alt text](image-1.png)
 ## Functionality Details
 Display two dropdowns - 
 1. One is Currency dropdown

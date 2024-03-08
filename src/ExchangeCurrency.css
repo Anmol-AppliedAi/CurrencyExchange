@@ -20,10 +20,11 @@
   }
   
   #checkboxes {
-    display: none;
+    display: block;
     border: 1px #dadada solid;
     position: absolute;
     background: #282c34;
+    width: 300px;
   }
   
   #checkboxes label {
