@@ -10,8 +10,14 @@ const currenciesApi = async (date="latest") => {
     const resp = await getApiCall(params);
     return resp;
 }
+const getCurrencyExchange = async (date="latest", currency="eur") => {
+    const params = `currency-api@${date}/v1/currencies/${currency}.json`;
+    const resp = await getApiCall(params);
+    return resp;
+}
 
 const Network = {
-    currenciesApi
+    currenciesApi,
+    getCurrencyExchange
 };
 export default Network;
