@@ -2,7 +2,12 @@ const baseUrl = "https://cdn.jsdelivr.net/npm/@fawazahmed0/";
 
 const getApiCall = async (params) => {
     const url = baseUrl + params;
-    return (await fetch(url)).json();
+    const resp = await fetch(url);
+    if(resp.status == 200) {
+        return resp.json();
+    }
+    return;
+
 } 
 
 const currenciesApi = async (date="latest") => {

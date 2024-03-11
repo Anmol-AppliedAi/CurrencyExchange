@@ -6,6 +6,7 @@ import './App.css';
 
 const App = ()=> {
   const {initialDate, maxDate, minDate} = dates;
+  const [loader, setLoader] = useState(false);
   const [date, setDate] = useState(initialDate);
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [currency, setCurrency] = useState("eur");
@@ -47,24 +48,34 @@ const App = ()=> {
   }
 
   const getAllCurrency= async ()=> {
+    setLoader(true);
     const resp = await Network.currenciesApi(date);
-    if(Object.keys(resp).length > 0) {
+    setLoader(false);
+    if(resp && Object.keys(resp).length > 0) {
       setDefaultCurrency(resp);
       setAllCurrencies(resp);
+    }
+    else {
+      setDefaultCurrency({});
     }
   }
 
   const getCurrencyExchange= async ()=> {
+    setLoader(true);
     const resp = await Network.getCurrencyExchange(date,currency);
-    if(Object.keys(resp).length > 0) {
+    setLoader(false);
+    if(resp && Object.keys(resp).length > 0) {
       setExchangeRates(resp?.[currency]);
       setDate(resp?.date);
     }
+    else {
+      setExchangeRates({});
+    }
   }
-  const getDetails = ()=> {
+  const getDetails = async ()=> {
+    await getCurrencyExchange();
     setDisplaySelectedCurrencies(selectedCurrencies);
     setSelectedDate(date);
-    getCurrencyExchange();
   }
   
   const setInitialCurrencies = ()=> {
@@ -136,14 +147,15 @@ const App = ()=> {
         
       </header>
       <h2>Exchange Rates</h2>
-      <table>
+      {loader && <div id="loader" class="loader"></div>}
+      {Object.keys(exchangeRates)?.length > 0 ? <table>
         <tr>
           <th>Currency</th>
           <th>Exchange Rate</th>
           <th>Date</th>
         </tr>
         {displayCurrencyExchange()}
-      </table>
+      </table>: <span>No Records Found</span>}
     </div>
   );
 }
