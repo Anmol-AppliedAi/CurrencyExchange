@@ -15,9 +15,13 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
             setSelectedCurrencies({...selectedCurrencies, [currency] : allCurrencies[currency]});
         }
     }
+    const removeSelectedItems = (currency)=> {
+        const newSelectedCurrencies = {...selectedCurrencies};
+        delete newSelectedCurrencies[currency];
+        setSelectedCurrencies(newSelectedCurrencies)
+    }
     const displayAllCurrencies = () => {
-        const initialSelectedValues= [];
-        const otherValues= [];
+        const displayValues= [];
         Object.keys(allCurrencies)?.length > 0 && Object.keys(allCurrencies).forEach((currency)=> {
             const value = (<label htmlFor={currency} key={currency}>
               <input 
@@ -31,10 +35,17 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
               />
               {allCurrencies[currency]}
             </label>);
-            if(selectedCurrencies[currency]) initialSelectedValues.push(value);
-            else if(allCurrencies[currency]) otherValues.push(value);
+            if(allCurrencies[currency]) displayValues.push(value);
         })
-        return [...initialSelectedValues, ...otherValues];
+        return [...displayValues];
+    }
+    const displaySelectedValues = ()=> {
+        return Object.keys(selectedCurrencies).map((currency)=> (
+                <span key={currency}>
+                    {selectedCurrencies[currency]}
+                    <button onClick={()=>{removeSelectedItems(currency)}}>X</button>
+                </span>
+        ));
     }
     const handleOutsideClick = (e) => {
         if (checkBoxRef.current && !checkBoxRef.current.contains(e.target)) {
@@ -48,18 +59,21 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
         };
     });
     return (
-        <div className="multiselect" ref={checkBoxRef}>
+        <div id="multiselect" ref={checkBoxRef}>
           <div className="selectBox" onClick={showCheckboxes}>
             <select>
               <option>Select an option</option>
             </select>
             <div className="overSelect"></div>
           </div>
-            {
-                expanded && <div id="checkboxes">
-                {displayAllCurrencies()}
-            </div>
+            { expanded && 
+                <div id="checkboxes">
+                    {displayAllCurrencies()}
+                </div>
             }
+            <div className='selectedValues'>
+                {displaySelectedValues()}
+            </div>
         </div>
     );
 };
