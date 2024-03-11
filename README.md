@@ -22,7 +22,7 @@ You may also see any lint errors in the console.
 
 ![alt text](image.png)
 ## Functionality Details
-Display two dropdowns - 
+App contains multiple dropdowns and fetch details button 
 1. One is Currency dropdown
 2. Second is Date Dropdown
 3. Third dropdown contains exchange currency
