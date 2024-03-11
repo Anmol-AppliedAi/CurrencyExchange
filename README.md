@@ -6,6 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install`
+
+Install the dependencies
+
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -17,11 +21,11 @@ You may also see any lint errors in the console.
 ## Landing Page
 
 ![alt text](image.png)
-![alt text](image-1.png)
 ## Functionality Details
 Display two dropdowns - 
 1. One is Currency dropdown
 2. Second is Date Dropdown
 3. Third dropdown contains exchange currency
+4. Click on Get Exchange rate button to get details
 
 On change on any of the dropdowns, we make an api calls and update the table below 
