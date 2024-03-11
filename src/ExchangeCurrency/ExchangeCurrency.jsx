@@ -15,11 +15,6 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
             setSelectedCurrencies({...selectedCurrencies, [currency] : allCurrencies[currency]});
         }
     }
-    const removeSelectedItems = (currency)=> {
-        const newSelectedCurrencies = {...selectedCurrencies};
-        delete newSelectedCurrencies[currency];
-        setSelectedCurrencies(newSelectedCurrencies)
-    }
     const displayAllCurrencies = () => {
         const displayValues= [];
         Object.keys(allCurrencies)?.length > 0 && Object.keys(allCurrencies).forEach((currency)=> {
@@ -38,14 +33,6 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
             if(allCurrencies[currency]) displayValues.push(value);
         })
         return [...displayValues];
-    }
-    const displaySelectedValues = ()=> {
-        return Object.keys(selectedCurrencies).map((currency)=> (
-                <span key={currency}>
-                    {selectedCurrencies[currency]}
-                    <button onClick={()=>{removeSelectedItems(currency)}}>X</button>
-                </span>
-        ));
     }
     const handleOutsideClick = (e) => {
         if (checkBoxRef.current && !checkBoxRef.current.contains(e.target)) {
@@ -71,9 +58,6 @@ const ExchangeCurrency = ({allCurrencies, selectedCurrencies, setSelectedCurrenc
                     {displayAllCurrencies()}
                 </div>
             }
-            <div className='selectedValues'>
-                {displaySelectedValues()}
-            </div>
         </div>
     );
 };

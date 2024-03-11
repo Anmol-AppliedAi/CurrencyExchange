@@ -7,11 +7,14 @@ import './App.css';
 const App = ()=> {
   const {initialDate, maxDate, minDate} = dates;
   const [date, setDate] = useState(initialDate);
+  const [selectedDate, setSelectedDate] = useState(initialDate);
   const [currency, setCurrency] = useState("eur");
   const [allCurrencies, setAllCurrencies] = useState({});
   const [selectedCurrencies, setSelectedCurrencies] = useState({});
+  const [selectedDisplayCurrencies, setDisplaySelectedCurrencies] = useState({});
   const [defaultCurrency, setDefaultCurrency] = useState({});
   const [exchangeRates, setExchangeRates] = useState({});
+
   const onCurrencyChange = (event) => {
     const curencyVal = event.target.value;
     setCurrency(curencyVal);
@@ -29,16 +32,16 @@ const App = ()=> {
   };
   const displayCurrencyExchange = ()=> {
     const filteredExchangeRates = {};
-    Object.keys(selectedCurrencies).forEach((currency)=> {
+    Object.keys(selectedDisplayCurrencies).forEach((currency)=> {
       if(exchangeRates[currency]){
         filteredExchangeRates[currency] = exchangeRates[currency];
       }
     })
     return Object.keys(filteredExchangeRates).map((keyName) => (
         <tr key={keyName}>
-          <td>{selectedCurrencies[keyName]}</td>
+          <td>{selectedDisplayCurrencies[keyName]}</td>
           <td>{exchangeRates[keyName]}</td>
-          <td>{date}</td>
+          <td>{selectedDate}</td>
         </tr>
     ))
   }
@@ -58,6 +61,11 @@ const App = ()=> {
       setDate(resp?.date);
     }
   }
+  const getDetails = ()=> {
+    setDisplaySelectedCurrencies(selectedCurrencies);
+    setSelectedDate(date);
+    getCurrencyExchange();
+  }
   
   const setInitialCurrencies = ()=> {
     const selectCurrency = {};
@@ -67,12 +75,27 @@ const App = ()=> {
       }
     })
     setSelectedCurrencies(selectCurrency);
+    setDisplaySelectedCurrencies(selectCurrency);
   }
+  const removeSelectedItems = (currency)=> {
+    const newSelectedCurrencies = {...selectedCurrencies};
+    delete newSelectedCurrencies[currency];
+    setSelectedCurrencies(newSelectedCurrencies)
+}
+  const displaySelectedValues = ()=> {
+    return Object.keys(selectedCurrencies).map((currency)=> (
+            <span key={currency}>
+                {selectedCurrencies[currency]}
+                <button onClick={()=>{removeSelectedItems(currency)}} disabled={Object.keys(selectedCurrencies).length < 4}>X</button>
+            </span>
+    ));
+}
 
   useEffect(()=> {
     getAllCurrency();
     getCurrencyExchange();
-  },[currency, date]);
+    
+  },[]);
 
   useEffect(()=> {
     setInitialCurrencies();
@@ -84,26 +107,33 @@ const App = ()=> {
   return (
     <div className="App">
       <header className="App-header">
-        <label for="defaultCurrency">Default Currency</label>
+        <label htmlFor="defaultCurrency">Default Currency</label>
+        <label htmlFor="exchangeCurrency">Exchange Currencies</label>
+        <label htmlFor="date">Exchange Date</label>
         <select name="defaultCurrency" id="defaultCurrency" value={currency} onChange={onCurrencyChange}>
           {displayDefaultCurrency()}
         </select>
-        <label for="date">Exchange Date</label>
-        <input 
-        type="date" 
-        id="date" 
-        name="date" 
-        value={date} 
-        onChange={onDateChange}
-        max={maxDate}
-        min={minDate}
-        />
-        <label for="exchangeCurrency">Exchange Currencies</label>
         <ExchangeCurrency 
           allCurrencies={allCurrencies} 
           selectedCurrencies={selectedCurrencies} 
           setSelectedCurrencies={setSelectedCurrencies}
+        /> 
+        <input 
+          type="date" 
+          id="date" 
+          name="date" 
+          value={date} 
+          onChange={onDateChange}
+          max={maxDate}
+          min={minDate}
         />
+        <div></div>
+        <div className='selectedValues'>
+            {displaySelectedValues()}
+        </div>
+        <div className='divCenter'><button className='button' onClick={getDetails}>Get Exchange Rate</button></div>
+        
+        
       </header>
       <h2>Exchange Rates</h2>
       <table>
